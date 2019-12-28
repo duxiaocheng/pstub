@@ -10,6 +10,28 @@
 #include <string.h>
 #include <assert.h>
 
+static void dumpHex(void *_pdat, size_t length)
+{
+    uint8_t *pdat = (uint8_t*)_pdat;
+    for (int i = 0; i < (int)length; i += 16) {
+        fprintf(stdout, "0x%016x: ", pdat);
+        for (int j = 0; j < 16; j++) {
+            fprintf(stdout, "%02x ", *pdat++);
+        }
+        pdat -= 16;
+        fprintf(stdout, "  ");
+        for (int k = 0; k < 16; k++) {
+            fprintf(stdout, "%c", *pdat > 31 && *pdat <= 'z' ? *pdat:'.');
+            pdat++;
+        }
+        fprintf(stdout, "\n");
+        if(i != 0 && i % 512 == 0)
+        {
+            fprintf(stdout, "\n");
+        }
+    }
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 typedef struct list_head
